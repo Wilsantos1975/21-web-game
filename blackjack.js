@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded",() => {
     let house = document.querySelector("#house")
     let scorePlayer = 0;
     let computerScore = 0
+    let winner;
 
 const fetchCards = async ()=> {
     try{
@@ -13,14 +14,13 @@ const fetchCards = async ()=> {
         shuffled
     } catch (err) {
         console.log("error")
+        
     }
 }
 
-// fetchCards();
-
 const drawCards  = async (deck_id,div,num,score)=>{
+    let Num1 = 0
     try {
-        let Num1 = 0
         let drawData = await axios.get(`https://deckofcardsapi.com/api/deck/${deck_id}/draw/?count=${num}`)
       
         for(let i = 0; i < num; i++){
@@ -33,40 +33,66 @@ const drawCards  = async (deck_id,div,num,score)=>{
             div.appendChild(image) 
             
         }
-        debugger
-        
-       
-        //    let score = score.value 
        
     } catch(err) {
         console.log(err);
     }
-    debugger
+  
     score += Num1
     let p = document.createElement("p")
     p.innerText = score
+    p.style.color = "white"
     div.appendChild(p)
 
 }
 
 const getValue  = (deck_id,score) => {
     // let numAces = 0;
-    deck_id.forEach((el) => {
-        if(el.value === "QUEEN" || el.value === "KING" || el.value === "JACK") {
+    
+        if(deck_id === "QUEEN" || deck_id === "KING" || deck_id === "JACK") {
             score += 10
-        } else if ( el.value === "ACE") {
+        } else if ( deck_id === "ACE") {
         if(score <=10){
             score += 11
         } else {
             score += 1
         }
         } else {
-            score += Number(value)
+            score += Number(deck_id)
         }
     
       return score   
+      
+}
+
+
+const isGamerOver = () => {
+    if(scorePlayer > computerScore && scorePlayer < 21 ){   
+        winner = playerOne
+        message.innerText = "player one wins"
+        // playerOne.appendChild(message)
+        return true
+    }else if(computerScore > scorePlayer  && computerScore < 21){
+        winner = house
+        message.innerText = "House always Wins"
+        // house.appendChild(message)
+        return true
+    } else if (scorePlayer > 21 || computerScore > 21) {
+        message.innerText = "BUSTED !!"
+        // document.body.appendChild(message)
+        return true
+    } else {
+        return false
     }
-    })
+}
+
+// const play = () => {
+//     if (isGamerOver()) {
+        
+//     }
+
+// }
+
 let startBtn = document.querySelector("#start")
 
 startBtn.addEventListener("click",()=>{
@@ -82,7 +108,10 @@ startBtn.addEventListener("click",()=>{
     })
     let stayBtn = document.querySelector("#stay");
     stayBtn.addEventListener("click",() => {
-        drawCards(deck_id, house,3)
+        isGamerOver()
+        debugger
+        drawCards(deck_id, house,3,computerScore)
     })
     fetchCards();
+
 })

@@ -27,8 +27,36 @@ body {
    
 }
 h1{
+    display: flex;
     font-family: fantasy;
     color: lightsteelblue;
     font-size: 700%;
 
+}
+#house {
+    margin-right: auto;
+    size: 40px;
+    justify-content: center;
+}
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 12px;
+    /* justify-content: space-around; */
+    /* size: 50%;
+    background-color: #f44336;
+    font-size: 24px;
+} */
+border-radius: 150px;
+margin-left: 45%;
+margin-right: 45%;
+padding: 50px;
+}
+
+
+
+.playerOne {
+    display: flex;
 }
